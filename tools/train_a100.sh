@@ -31,9 +31,9 @@ export DISABLE_NCCL_COMPUTE_STREAM=1
 export ONEFLOW_DEBUG_MODE=1
 export ONEFLOW_PROFILER_KERNEL_PROFILE_KERNEL_FORWARD_RANGE=1
 
-export GLOG_vmodule=plan_util*=1,of_collective_actor*=1,of_collective_boxing_kernels*=1,collective_backend_ofccl*=1,hierarchical_sub_task_graph_builder_impl*=1,of_request_store*=1,request_store*=1,runtime*=1,scheduler*=1,collective_manager*=1,of_collective_boxing_sub_task_graph_builder*=1,collective_boxing_sub_task_graph_builder*=1
+# export GLOG_vmodule=plan_util*=1,of_collective_actor*=1,of_collective_boxing_kernels*=1,collective_backend_ofccl*=1,hierarchical_sub_task_graph_builder_impl*=1,of_request_store*=1,request_store*=1,runtime*=1,scheduler*=1,collective_manager*=1,of_collective_boxing_sub_task_graph_builder*=1,collective_boxing_sub_task_graph_builder*=1
 # nn_graph*=1,
-# export GLOG_v=1
+export GLOG_v=1
 
 export SHOW_ALL_PREPARED_COLL=1
 
@@ -43,6 +43,11 @@ export DEBUG_FILE="/home/panlichen/work/oneflow/log/oneflow_cpu_rank_"
 
 export NUM_ITER_ENV=200
 echo NUM_ITER_ENV=$NUM_ITER_ENV
+
+export TP=2
+export DP=2
+export PP=2
+export AG=2
 
 if [ $GPUS = 2 ]; then
     export CUDA_VISIBLE_DEVICES=4,5
@@ -81,6 +86,14 @@ elif [ $GPUS = 4 ]; then
     export NUM_TRY_TASKQ_HEAD=200
 
 elif [  $GPUS = 8 ]; then
+    # 2 microbatch
+    export ONEFLOW_OFCCL_SKIP_NEGO=0
+    export RECV_SUCCESS_FACTOR=5
+    export RECV_SUCCESS_THRESHOLD=2000
+    export BASE_CTX_SWITCH_THRESHOLD=200
+    export TOLERANT_UNPROGRESSED_CNT=80000
+    export NUM_TRY_TASKQ_HEAD=5
+
 
     #pure dp
     # export ONEFLOW_OFCCL_SKIP_NEGO=0
@@ -107,12 +120,12 @@ elif [  $GPUS = 8 ]; then
     # export NUM_TRY_TASKQ_HEAD=10
 
     #3d
-    export ONEFLOW_OFCCL_SKIP_NEGO=0
-    export RECV_SUCCESS_FACTOR=5
-    export RECV_SUCCESS_THRESHOLD=10000000
-    export BASE_CTX_SWITCH_THRESHOLD=20000
-    export TOLERANT_UNPROGRESSED_CNT=80000
-    export NUM_TRY_TASKQ_HEAD=10
+    # export ONEFLOW_OFCCL_SKIP_NEGO=0
+    # export RECV_SUCCESS_FACTOR=5
+    # export RECV_SUCCESS_THRESHOLD=10000000
+    # export BASE_CTX_SWITCH_THRESHOLD=20000
+    # export TOLERANT_UNPROGRESSED_CNT=80000
+    # export NUM_TRY_TASKQ_HEAD=10
 
     #2dp4pp
     # export ONEFLOW_OFCCL_SKIP_NEGO=0
@@ -199,4 +212,5 @@ $cmd \
   --nproc_per_node $GPUS --nnodes $NODE --node_rank $NODE_RANK --master_addr $ADDR --master_port $PORT \
   $FILE --config-file $CONFIG ${@:4} \
   > /home/panlichen/work/oneflow/log/oneflow.log 2>&1
+cp oneflow.log oneflow_${CARDNAME}_TP_${TP}_DP_${DP}_PP_${PP}_AG_${AG}_BASE_${BASE_CTX_SWITCH_THRESHOLD}_FACTOR_${RECV_SUCCESS_FACTOR}_UP_${RECV_SUCCESS_THRESHOLD}_TRYHEAD_${NUM_TRY_TASKQ_HEAD}.log
 
