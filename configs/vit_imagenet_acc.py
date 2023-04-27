@@ -90,12 +90,12 @@ train.zero_optimization.stage = 1
 
 # Distributed Settings
 train.dist.pipeline_num_layers = model.cfg.depth
-train.dist.tensor_parallel_size = 2
-train.dist.data_parallel_size = 2
-train.dist.pipeline_parallel_size = 2
+train.dist.data_parallel_size = int(os.getenv("DP"))
+train.dist.tensor_parallel_size = int(os.getenv("TP"))
+train.dist.pipeline_parallel_size = int(os.getenv("PP"))
 
 train.train_micro_batch_size = 128
 
-train.num_accumulation_steps = train.dist.pipeline_parallel_size # global_batch_size = micro_batch_size  * num_grad_acc * data_parallel_groups
+train.num_accumulation_steps = int(os.getenv("AG")) # global_batch_size = micro_batch_size  * num_grad_acc * data_parallel_groups
 train.train_micro_batch_size = 128 // train.num_accumulation_steps
 
