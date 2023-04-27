@@ -1,5 +1,11 @@
 from libai.config import LazyCall
-from .common.models.vit.vit_base_patch16_224 import model #from .common.models.vit.vit_large_patch16_224 import model
+
+from .common.models.vit.vit_base_patch16_224 import model
+# from .common.models.vit.vit_large_patch16_224 import model
+# from .common.models.vit.vit_huge_patch14_224 import model
+# from .common.models.vit.vit_giant_patch14_224 import model
+# from .common.models.vit.vit_giganitc_patch14_224 import model
+
 from .common.models.graph import graph
 from .common.train import train
 from .common.optim import optim
@@ -35,7 +41,6 @@ optim.params.clip_grad_norm_type = None
 optim.params.overrides = {"pos_embed": {"weight_decay": 0.0}, "cls_token": {"weight_decay": 0.0}}
 
 # Refine train cfg for vit model
-train.train_micro_batch_size = 128
 train.test_micro_batch_size = 128
 # train.train_epoch = 300
 train.train_epoch = 0
@@ -63,3 +68,9 @@ train.dist.pipeline_num_layers = model.cfg.depth
 train.dist.data_parallel_size = 2
 train.dist.tensor_parallel_size = 2
 train.dist.pipeline_parallel_size = 2
+
+train.train_micro_batch_size = 128
+
+train.num_accumulation_steps = train.dist.pipeline_parallel_size # global_batch_size = micro_batch_size  * num_grad_acc * data_parallel_groups
+train.train_micro_batch_size = 128 // train.num_accumulation_steps
+
