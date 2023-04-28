@@ -54,7 +54,7 @@ export DEV_TRY_ROUND=10
 export CHECK_REMAINING_SQE_INTERVAL=10000
 export DEBUG_FILE="/home/panlichen/work/oneflow/log/oneflow_cpu_rank_"
 
-export NUM_ITER_ENV=20
+export NUM_ITER_ENV=200
 echo NUM_ITER_ENV=$NUM_ITER_ENV
 
 export TP=2
