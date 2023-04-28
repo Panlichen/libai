@@ -2,12 +2,11 @@ from libai.config import LazyCall
 
 import os
 host = os.environ.get('HOST')
-if (host == "oneflow-25" or host == "oneflow-27"):
+use_model = os.environ.get('MODEL')
+if (use_model == "BASE"):
     from .common.models.vit.vit_base_patch16_224 import model
-    # from .common.models.vit.vit_huge_patch14_224 import model
-    # from .common.models.vit.vit_large_patch16_224 import model
-else:
-    from .common.models.vit.vit_small_patch16_224 import model
+elif (use_model == "LARGE"):
+    from .common.models.vit.vit_large_patch16_224 import model
 
 from .common.models.graph import graph
 from .common.train import train

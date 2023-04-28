@@ -48,6 +48,7 @@ export TP=2
 export DP=2
 export PP=2
 export AG=2
+export MODEL=BASE
 
 if [ $GPUS = 2 ]; then
     export CUDA_VISIBLE_DEVICES=4,5
@@ -174,6 +175,11 @@ echo NUM_TRY_TASKQ_HEAD=$NUM_TRY_TASKQ_HEAD
 echo DEV_TRY_ROUND=$DEV_TRY_ROUND
 echo CHECK_REMAINING_SQE_INTERVAL=$CHECK_REMAINING_SQE_INTERVAL
 echo DEBUG_FILE=$DEBUG_FILE
+echo TP=$TP
+echo DP=$DP
+echo PP=$PP
+echo AG=$AG
+echo MODEL=$MODEL
 
 export PYTHONUNBUFFERED=1
 echo PYTHONUNBUFFERED=$PYTHONUNBUFFERED
@@ -213,6 +219,6 @@ $cmd \
   $FILE --config-file $CONFIG ${@:4} \
   > /home/panlichen/work/oneflow/log/oneflow.log 2>&1
 if [[ $ONEFLOW_ENABLE_OFCCL = 1 ]]; then
-    cp /home/panlichen/work/oneflow/log/oneflow.log oneflow_${CARDNAME}_TP_${TP}_DP_${DP}_PP_${PP}_AG_${AG}_BASE_${BASE_CTX_SWITCH_THRESHOLD}_FACTOR_${RECV_SUCCESS_FACTOR}_UP_${RECV_SUCCESS_THRESHOLD}_TRYHEAD_${NUM_TRY_TASKQ_HEAD}.log
+    cp /home/panlichen/work/oneflow/log/oneflow.log oneflow_${CARDNAME}_MODEL_${MODEL}_TP_${TP}_DP_${DP}_PP_${PP}_AG_${AG}_BASE_${BASE_CTX_SWITCH_THRESHOLD}_FACTOR_${RECV_SUCCESS_FACTOR}_UP_${RECV_SUCCESS_THRESHOLD}_TRYHEAD_${NUM_TRY_TASKQ_HEAD}.log
 fi
 

@@ -47,7 +47,8 @@ echo NUM_ITER_ENV=$NUM_ITER_ENV
 export TP=2
 export DP=2
 export PP=2
-export AG=2
+export AG=4
+export MODEL=BASE
 
 if [ $GPUS = 2 ]; then
     export CUDA_VISIBLE_DEVICES=4,5
@@ -95,6 +96,14 @@ elif [ $GPUS = 4 ]; then
 
 elif [  $GPUS = 8 ]; then
 
+    # large 3d 4ag
+    export ONEFLOW_OFCCL_SKIP_NEGO=0
+    export RECV_SUCCESS_FACTOR=5
+    export RECV_SUCCESS_THRESHOLD=2000
+    export BASE_CTX_SWITCH_THRESHOLD=300
+    export TOLERANT_UNPROGRESSED_CNT=80000
+    export NUM_TRY_TASKQ_HEAD=5
+
     #pure dp
     # export ONEFLOW_OFCCL_SKIP_NEGO=0
     # export RECV_SUCCESS_FACTOR=30
@@ -127,7 +136,7 @@ elif [  $GPUS = 8 ]; then
     # export TOLERANT_UNPROGRESSED_CNT=80000
     # export NUM_TRY_TASKQ_HEAD=10
 
-    # 3d 2ag
+    # base 3d 2ag
     # export ONEFLOW_OFCCL_SKIP_NEGO=0
     # export RECV_SUCCESS_FACTOR=5
     # export RECV_SUCCESS_THRESHOLD=2000
@@ -135,13 +144,13 @@ elif [  $GPUS = 8 ]; then
     # export TOLERANT_UNPROGRESSED_CNT=80000
     # export NUM_TRY_TASKQ_HEAD=5
     
-    # 3d 4ag
-    export ONEFLOW_OFCCL_SKIP_NEGO=0
-    export RECV_SUCCESS_FACTOR=4
-    export RECV_SUCCESS_THRESHOLD=1200
-    export BASE_CTX_SWITCH_THRESHOLD=150
-    export TOLERANT_UNPROGRESSED_CNT=80000
-    export NUM_TRY_TASKQ_HEAD=5
+    # base 3d 4ag
+    # export ONEFLOW_OFCCL_SKIP_NEGO=0
+    # export RECV_SUCCESS_FACTOR=4
+    # export RECV_SUCCESS_THRESHOLD=1200
+    # export BASE_CTX_SWITCH_THRESHOLD=150
+    # export TOLERANT_UNPROGRESSED_CNT=80000
+    # export NUM_TRY_TASKQ_HEAD=5
 
     #2dp4pp
     # export ONEFLOW_OFCCL_SKIP_NEGO=0
@@ -190,6 +199,11 @@ echo NUM_TRY_TASKQ_HEAD=$NUM_TRY_TASKQ_HEAD
 echo DEV_TRY_ROUND=$DEV_TRY_ROUND
 echo CHECK_REMAINING_SQE_INTERVAL=$CHECK_REMAINING_SQE_INTERVAL
 echo DEBUG_FILE=$DEBUG_FILE
+echo TP=$TP
+echo DP=$DP
+echo PP=$PP
+echo AG=$AG
+echo MODEL=$MODEL
 
 export PYTHONUNBUFFERED=1
 echo PYTHONUNBUFFERED=$PYTHONUNBUFFERED
@@ -229,7 +243,7 @@ $cmd \
   $FILE --config-file $CONFIG ${@:4} \
   > /home/panlichen/work/oneflow/log/oneflow.log 2>&1
 if [[ $ONEFLOW_ENABLE_OFCCL = 1 ]]; then
-    cp /home/panlichen/work/oneflow/log/oneflow.log oneflow_${HOST}_TP_${TP}_DP_${DP}_PP_${PP}_AG_${AG}_BASE_${BASE_CTX_SWITCH_THRESHOLD}_FACTOR_${RECV_SUCCESS_FACTOR}_UP_${RECV_SUCCESS_THRESHOLD}_TRYHEAD_${NUM_TRY_TASKQ_HEAD}.log
+    cp /home/panlichen/work/oneflow/log/oneflow.log oneflow_${HOST}_MODEL_${MODEL}_TP_${TP}_DP_${DP}_PP_${PP}_AG_${AG}_BASE_${BASE_CTX_SWITCH_THRESHOLD}_FACTOR_${RECV_SUCCESS_FACTOR}_UP_${RECV_SUCCESS_THRESHOLD}_TRYHEAD_${NUM_TRY_TASKQ_HEAD}.log
 fi
 
 

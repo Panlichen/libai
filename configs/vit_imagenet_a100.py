@@ -1,10 +1,20 @@
 from libai.config import LazyCall
 
-from .common.models.vit.vit_base_patch16_224 import model
+# from .common.models.vit.vit_base_patch16_224 import model
 # from .common.models.vit.vit_large_patch16_224 import model
 # from .common.models.vit.vit_huge_patch14_224 import model
 # from .common.models.vit.vit_giant_patch14_224 import model
 # from .common.models.vit.vit_giganitc_patch14_224 import model
+
+use_model = os.environ.get('MODEL')
+if (use_model == "BASE"):
+    from .common.models.vit.vit_base_patch16_224 import model
+elif (use_model == "LARGE"):
+    from .common.models.vit.vit_large_patch16_224 import model
+elif (use_model == "HUGE"):
+    from .common.models.vit.vit_huge_patch14_224 import model
+elif (use_model == "GIANT"):
+    from .common.models.vit.vit_giant_patch14_224 import model
 
 from .common.models.graph import graph
 from .common.train import train

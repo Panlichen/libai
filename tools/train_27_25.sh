@@ -13,14 +13,14 @@ GPUS=$3
 
 NODE=2
 
-if [[ $HOST = "oneflow-27" ]]; then
+if [[ $HOST = "oneflow-28" ]]; then
     NODE_RANK=0
 elif [[ $HOST = "oneflow-25" ]]; then
     NODE_RANK=1
 fi
 echo $NODE_RANK
 
-ADDR=11.11.1.27
+ADDR=11.11.1.28
 PORT=12345
 
 export GLOG_logtostderr=1
@@ -57,98 +57,28 @@ export DEBUG_FILE="/home/panlichen/work/oneflow/log/oneflow_cpu_rank_"
 export NUM_ITER_ENV=20
 echo NUM_ITER_ENV=$NUM_ITER_ENV
 
-if [ $GPUS = 2 ]; then
-    export CUDA_VISIBLE_DEVICES=4,5
+export TP=2
+export DP=2
+export PP=2
+export AG=4
+export MODEL=BASE
 
-    #pure dp
-    # export RECV_SUCCESS_FACTOR=5
-    # export RECV_SUCCESS_THRESHOLD=10000
-    # export BASE_CTX_SWITCH_THRESHOLD=100
-    # export TOLERANT_UNPROGRESSED_CNT=2000
-    # export NUM_TRY_TASKQ_HEAD=40
-    
-    #pure tp
-    export RECV_SUCCESS_FACTOR=20
-    export RECV_SUCCESS_THRESHOLD=10000
-    export BASE_CTX_SWITCH_THRESHOLD=120
-    export TOLERANT_UNPROGRESSED_CNT=10000
-    export NUM_TRY_TASKQ_HEAD=100
-elif [ $GPUS = 4 ]; then
-    export CUDA_VISIBLE_DEVICES=0,1,4,5
-    export ONEFLOW_OFCCL_SKIP_NEGO=0
-
-    #pure dp
-    # export ONEFLOW_OFCCL_SKIP_NEGO=0
-    # export RECV_SUCCESS_FACTOR=40
-    # export RECV_SUCCESS_THRESHOLD=10000
-    # export BASE_CTX_SWITCH_THRESHOLD=30000
-    # export TOLERANT_UNPROGRESSED_CNT=30000
-    # export NUM_TRY_TASKQ_HEAD=200
-    
-    #pure tp
-    export ONEFLOW_OFCCL_SKIP_NEGO=0
-    export RECV_SUCCESS_FACTOR=40
-    export RECV_SUCCESS_THRESHOLD=1000000000
-    export BASE_CTX_SWITCH_THRESHOLD=100000
-    export TOLERANT_UNPROGRESSED_CNT=16000
-    export NUM_TRY_TASKQ_HEAD=200
 
 elif [  $GPUS = 8 ]; then
-
-    #pure dp
-    # export ONEFLOW_OFCCL_SKIP_NEGO=0
-    # export RECV_SUCCESS_FACTOR=30
-    # export RECV_SUCCESS_THRESHOLD=100000000
-    # export BASE_CTX_SWITCH_THRESHOLD=120000
-    # export TOLERANT_UNPROGRESSED_CNT=180000
-    # export NUM_TRY_TASKQ_HEAD=240
-    
-    #pure tp
-    # export ONEFLOW_OFCCL_SKIP_NEGO=0
-    # export RECV_SUCCESS_FACTOR=10
-    # export RECV_SUCCESS_THRESHOLD=1000000
-    # export BASE_CTX_SWITCH_THRESHOLD=6000
-    # export TOLERANT_UNPROGRESSED_CNT=8000
-    # export NUM_TRY_TASKQ_HEAD=10
-
-    #4tp2dp
-    # export ONEFLOW_OFCCL_SKIP_NEGO=0
-    # export RECV_SUCCESS_FACTOR=10
-    # export RECV_SUCCESS_THRESHOLD=10000000
-    # export BASE_CTX_SWITCH_THRESHOLD=20000
-    # export TOLERANT_UNPROGRESSED_CNT=9000
-    # export NUM_TRY_TASKQ_HEAD=10
-
-    #3d
+    # base3d-2tp4dp2pp 2
     export ONEFLOW_OFCCL_SKIP_NEGO=0
     export RECV_SUCCESS_FACTOR=5
-    export RECV_SUCCESS_THRESHOLD=10000000
-    export BASE_CTX_SWITCH_THRESHOLD=20000
+    export RECV_SUCCESS_THRESHOLD=2000
+    export BASE_CTX_SWITCH_THRESHOLD=300
     export TOLERANT_UNPROGRESSED_CNT=80000
-    export NUM_TRY_TASKQ_HEAD=10
+    export NUM_TRY_TASKQ_HEAD=5
 
-    #2dp4pp
+    #3d
     # export ONEFLOW_OFCCL_SKIP_NEGO=0
     # export RECV_SUCCESS_FACTOR=5
-    # export RECV_SUCCESS_THRESHOLD=10000
-    # export BASE_CTX_SWITCH_THRESHOLD=8000
+    # export RECV_SUCCESS_THRESHOLD=10000000
+    # export BASE_CTX_SWITCH_THRESHOLD=20000
     # export TOLERANT_UNPROGRESSED_CNT=80000
-    # export NUM_TRY_TASKQ_HEAD=10
-
-    #2tp4pp
-    # export ONEFLOW_OFCCL_SKIP_NEGO=1
-    # export RECV_SUCCESS_FACTOR=10
-    # export RECV_SUCCESS_THRESHOLD=10000
-    # export BASE_CTX_SWITCH_THRESHOLD=12000
-    # export TOLERANT_UNPROGRESSED_CNT=8000
-    # export NUM_TRY_TASKQ_HEAD=10
-
-    #4tp2pp
-    # export ONEFLOW_OFCCL_SKIP_NEGO=1
-    # export RECV_SUCCESS_FACTOR=10
-    # export RECV_SUCCESS_THRESHOLD=10000
-    # export BASE_CTX_SWITCH_THRESHOLD=14000
-    # export TOLERANT_UNPROGRESSED_CNT=8000
     # export NUM_TRY_TASKQ_HEAD=10
 
 fi
@@ -174,6 +104,11 @@ echo NUM_TRY_TASKQ_HEAD=$NUM_TRY_TASKQ_HEAD
 echo DEV_TRY_ROUND=$DEV_TRY_ROUND
 echo CHECK_REMAINING_SQE_INTERVAL=$CHECK_REMAINING_SQE_INTERVAL
 echo DEBUG_FILE=$DEBUG_FILE
+echo TP=$TP
+echo DP=$DP
+echo PP=$PP
+echo AG=$AG
+echo MODEL=$MODEL
 
 export PYTHONUNBUFFERED=1
 echo PYTHONUNBUFFERED=$PYTHONUNBUFFERED
@@ -213,6 +148,6 @@ $cmd \
   $FILE --config-file $CONFIG ${@:4} \
   > /home/panlichen/work/oneflow/log/oneflow.log 2>&1
 if [[ $ONEFLOW_ENABLE_OFCCL = 1 ]]; then
-    cp /home/panlichen/work/oneflow/log/oneflow.log oneflow_${HOST}_TP_${TP}_DP_${DP}_PP_${PP}_AG_${AG}_BASE_${BASE_CTX_SWITCH_THRESHOLD}_FACTOR_${RECV_SUCCESS_FACTOR}_UP_${RECV_SUCCESS_THRESHOLD}_TRYHEAD_${NUM_TRY_TASKQ_HEAD}.log
+    cp /home/panlichen/work/oneflow/log/oneflow.log oneflow_${HOST}_MODEL_${MODEL}_TP_${TP}_DP_${DP}_PP_${PP}_AG_${AG}_BASE_${BASE_CTX_SWITCH_THRESHOLD}_FACTOR_${RECV_SUCCESS_FACTOR}_UP_${RECV_SUCCESS_THRESHOLD}_TRYHEAD_${NUM_TRY_TASKQ_HEAD}.log
 fi
 
