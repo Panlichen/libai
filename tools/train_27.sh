@@ -85,6 +85,14 @@ elif [ $GPUS = 4 ]; then
     export TOLERANT_UNPROGRESSED_CNT=16000
     export NUM_TRY_TASKQ_HEAD=200
 
+    # 2tp2pp 2ag
+    # export ONEFLOW_OFCCL_SKIP_NEGO=0
+    # export RECV_SUCCESS_FACTOR=5
+    # export RECV_SUCCESS_THRESHOLD=2000
+    # export BASE_CTX_SWITCH_THRESHOLD=200
+    # export TOLERANT_UNPROGRESSED_CNT=80000
+    # export NUM_TRY_TASKQ_HEAD=5
+
 elif [  $GPUS = 8 ]; then
 
     #pure dp
@@ -119,10 +127,19 @@ elif [  $GPUS = 8 ]; then
     # export TOLERANT_UNPROGRESSED_CNT=80000
     # export NUM_TRY_TASKQ_HEAD=10
 
+    # 3d 2ag
+    # export ONEFLOW_OFCCL_SKIP_NEGO=0
+    # export RECV_SUCCESS_FACTOR=5
+    # export RECV_SUCCESS_THRESHOLD=2000
+    # export BASE_CTX_SWITCH_THRESHOLD=200
+    # export TOLERANT_UNPROGRESSED_CNT=80000
+    # export NUM_TRY_TASKQ_HEAD=5
+    
+    # 3d 4ag
     export ONEFLOW_OFCCL_SKIP_NEGO=0
-    export RECV_SUCCESS_FACTOR=5
-    export RECV_SUCCESS_THRESHOLD=2000
-    export BASE_CTX_SWITCH_THRESHOLD=200
+    export RECV_SUCCESS_FACTOR=4
+    export RECV_SUCCESS_THRESHOLD=1200
+    export BASE_CTX_SWITCH_THRESHOLD=150
     export TOLERANT_UNPROGRESSED_CNT=80000
     export NUM_TRY_TASKQ_HEAD=5
 
@@ -211,6 +228,8 @@ $cmd \
   --nproc_per_node $GPUS --nnodes $NODE --node_rank $NODE_RANK --master_addr $ADDR --master_port $PORT \
   $FILE --config-file $CONFIG ${@:4} \
   > /home/panlichen/work/oneflow/log/oneflow.log 2>&1
-cp /home/panlichen/work/oneflow/log/oneflow.log oneflow_${HOST}_TP_${TP}_DP_${DP}_PP_${PP}_AG_${AG}_BASE_${BASE_CTX_SWITCH_THRESHOLD}_FACTOR_${RECV_SUCCESS_FACTOR}_UP_${RECV_SUCCESS_THRESHOLD}_TRYHEAD_${NUM_TRY_TASKQ_HEAD}.log
+if [[ $ONEFLOW_ENABLE_OFCCL = 1 ]]; then
+    cp /home/panlichen/work/oneflow/log/oneflow.log oneflow_${HOST}_TP_${TP}_DP_${DP}_PP_${PP}_AG_${AG}_BASE_${BASE_CTX_SWITCH_THRESHOLD}_FACTOR_${RECV_SUCCESS_FACTOR}_UP_${RECV_SUCCESS_THRESHOLD}_TRYHEAD_${NUM_TRY_TASKQ_HEAD}.log
+fi
 
 
