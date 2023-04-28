@@ -58,13 +58,13 @@ export NUM_ITER_ENV=20
 echo NUM_ITER_ENV=$NUM_ITER_ENV
 
 export TP=2
-export DP=2
+export DP=4
 export PP=2
 export AG=4
 export MODEL=BASE
 
 
-elif [  $GPUS = 8 ]; then
+if [  $GPUS = 8 ]; then
     # base3d-2tp4dp2pp 2
     export ONEFLOW_OFCCL_SKIP_NEGO=0
     export RECV_SUCCESS_FACTOR=5
