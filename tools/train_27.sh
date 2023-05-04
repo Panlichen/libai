@@ -41,14 +41,14 @@ export DEV_TRY_ROUND=10
 export CHECK_REMAINING_SQE_INTERVAL=10000
 export DEBUG_FILE="/home/panlichen/work/oneflow/log/oneflow_cpu_rank_"
 
-export NUM_ITER_ENV=200
+export NUM_ITER_ENV=10
 echo NUM_ITER_ENV=$NUM_ITER_ENV
 
 export TP=2
 export DP=2
 export PP=2
 export AG=4
-export MODEL=BASE
+export MODEL=LARGE
 
 if [ $GPUS = 2 ]; then
     export CUDA_VISIBLE_DEVICES=4,5

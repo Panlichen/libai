@@ -13,15 +13,35 @@ GPUS=$3
 
 NODE=2
 
+# if [[ $HOST = "oneflow-28" ]]; then
+#     NODE_RANK=0
+# elif [[ $HOST = "oneflow-25" ]]; then
+#     NODE_RANK=1
+# fi
+# echo $NODE_RANK
+
+# ADDR=11.11.1.28
+# PORT=12345
+
 if [[ $HOST = "oneflow-28" ]]; then
     NODE_RANK=0
-elif [[ $HOST = "oneflow-25" ]]; then
+elif [[ $HOST = "oneflow-27" ]]; then
     NODE_RANK=1
 fi
 echo $NODE_RANK
 
 ADDR=11.11.1.28
 PORT=12345
+
+# if [[ $HOST = "oneflow-27" ]]; then
+#     NODE_RANK=0
+# elif [[ $HOST = "oneflow-26" ]]; then
+#     NODE_RANK=1
+# fi
+# echo $NODE_RANK
+
+# ADDR=11.11.1.27
+# PORT=54321
 
 export GLOG_logtostderr=1
 export ONEFLOW_ACTOR_ENABLE_LIGHT_ACTOR=0 # 禁用lightweight actor
@@ -54,19 +74,34 @@ export DEV_TRY_ROUND=10
 export CHECK_REMAINING_SQE_INTERVAL=10000
 export DEBUG_FILE="/home/panlichen/work/oneflow/log/oneflow_cpu_rank_"
 
-export NUM_ITER_ENV=200
+export NUM_ITER_ENV=10
 echo NUM_ITER_ENV=$NUM_ITER_ENV
 
 export TP=4
 export DP=2
 export PP=2
-export AG=2
-export MODEL=BASE
+export AG=1
+export MODEL=LARGE
 
 
 if [  $GPUS = 8 ]; then
 
+    # base3d-2tp4dp2pp 1
+    # export ONEFLOW_OFCCL_SKIP_NEGO=0
+    # export RECV_SUCCESS_FACTOR=5
+    # export RECV_SUCCESS_THRESHOLD=10000000
+    # export BASE_CTX_SWITCH_THRESHOLD=80000
+    # export TOLERANT_UNPROGRESSED_CNT=80000
+    # export NUM_TRY_TASKQ_HEAD=10
+
     # # large3d-2tp4dp2pp 4
+    # export ONEFLOW_OFCCL_SKIP_NEGO=0
+    # export RECV_SUCCESS_FACTOR=10
+    # export RECV_SUCCESS_THRESHOLD=5000
+    # export BASE_CTX_SWITCH_THRESHOLD=400
+    # export TOLERANT_UNPROGRESSED_CNT=80000
+    # export NUM_TRY_TASKQ_HEAD=5
+
     # export ONEFLOW_OFCCL_SKIP_NEGO=0
     # export RECV_SUCCESS_FACTOR=5
     # export RECV_SUCCESS_THRESHOLD=3000
@@ -76,9 +111,9 @@ if [  $GPUS = 8 ]; then
     
     # base3d-4tp2dp2pp 2
     export ONEFLOW_OFCCL_SKIP_NEGO=0
-    export RECV_SUCCESS_FACTOR=5
-    export RECV_SUCCESS_THRESHOLD=3000
-    export BASE_CTX_SWITCH_THRESHOLD=400
+    export RECV_SUCCESS_FACTOR=20
+    export RECV_SUCCESS_THRESHOLD=5000
+    export BASE_CTX_SWITCH_THRESHOLD=200
     export TOLERANT_UNPROGRESSED_CNT=80000
     export NUM_TRY_TASKQ_HEAD=5
 
@@ -122,6 +157,14 @@ if [  $GPUS = 8 ]; then
     # export NUM_TRY_TASKQ_HEAD=5
 
     # base3d-2tp4dp2pp 4
+
+    # export ONEFLOW_OFCCL_SKIP_NEGO=0
+    # export RECV_SUCCESS_FACTOR=10
+    # export RECV_SUCCESS_THRESHOLD=5000
+    # export BASE_CTX_SWITCH_THRESHOLD=400
+    # export TOLERANT_UNPROGRESSED_CNT=80000
+    # export NUM_TRY_TASKQ_HEAD=5
+
     # export ONEFLOW_OFCCL_SKIP_NEGO=0
     # export RECV_SUCCESS_FACTOR=5
     # export RECV_SUCCESS_THRESHOLD=2000
@@ -133,7 +176,7 @@ if [  $GPUS = 8 ]; then
     # export ONEFLOW_OFCCL_SKIP_NEGO=0
     # export RECV_SUCCESS_FACTOR=5
     # export RECV_SUCCESS_THRESHOLD=10000000
-    # export BASE_CTX_SWITCH_THRESHOLD=20000
+    # export BASE_CTX_SWITCH_THRESHOLD=50000
     # export TOLERANT_UNPROGRESSED_CNT=80000
     # export NUM_TRY_TASKQ_HEAD=10
 
