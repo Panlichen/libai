@@ -5,7 +5,7 @@ from libai.config import LazyCall
 # from .common.models.vit.vit_huge_patch14_224 import model
 # from .common.models.vit.vit_giant_patch14_224 import model
 # from .common.models.vit.vit_giganitc_patch14_224 import model
-
+import os
 use_model = os.environ.get('MODEL')
 if (use_model == "BASE"):
     from .common.models.vit.vit_base_patch16_224 import model
