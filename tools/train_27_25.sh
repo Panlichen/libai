@@ -74,14 +74,14 @@ export DEV_TRY_ROUND=10
 export CHECK_REMAINING_SQE_INTERVAL=10000
 export DEBUG_FILE="/home/panlichen/work/oneflow/log/oneflow_cpu_rank_"
 
-export NUM_ITER_ENV=10
+export NUM_ITER_ENV=200
 echo NUM_ITER_ENV=$NUM_ITER_ENV
 
 export TP=4
 export DP=2
 export PP=2
-export AG=1
-export MODEL=LARGE
+export AG=2
+export MODEL=BASE
 
 
 if [  $GPUS = 8 ]; then
