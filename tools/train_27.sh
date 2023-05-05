@@ -44,11 +44,11 @@ export DEBUG_FILE="/home/panlichen/work/oneflow/log/oneflow_cpu_rank_"
 export NUM_ITER_ENV=200
 echo NUM_ITER_ENV=$NUM_ITER_ENV
 
-export TP=2
-export DP=2
-export PP=2
-export AG=4
-export MODEL=LARGE
+export TP=1
+export DP=8
+export PP=1
+export AG=1
+export MODEL=BASE
 
 if [ $GPUS = 2 ]; then
     export CUDA_VISIBLE_DEVICES=4,5
@@ -67,24 +67,24 @@ if [ $GPUS = 2 ]; then
     export TOLERANT_UNPROGRESSED_CNT=10000
     export NUM_TRY_TASKQ_HEAD=100
 elif [ $GPUS = 4 ]; then
-    export CUDA_VISIBLE_DEVICES=0,1,4,5
+    export CUDA_VISIBLE_DEVICES=2,3,4,5
     export ONEFLOW_OFCCL_SKIP_NEGO=0
 
     #pure dp
-    # export ONEFLOW_OFCCL_SKIP_NEGO=0
-    # export RECV_SUCCESS_FACTOR=40
-    # export RECV_SUCCESS_THRESHOLD=10000
-    # export BASE_CTX_SWITCH_THRESHOLD=30000
-    # export TOLERANT_UNPROGRESSED_CNT=30000
-    # export NUM_TRY_TASKQ_HEAD=200
-    
-    #pure tp
     export ONEFLOW_OFCCL_SKIP_NEGO=0
     export RECV_SUCCESS_FACTOR=40
-    export RECV_SUCCESS_THRESHOLD=1000000000
-    export BASE_CTX_SWITCH_THRESHOLD=100000
-    export TOLERANT_UNPROGRESSED_CNT=16000
+    export RECV_SUCCESS_THRESHOLD=10000
+    export BASE_CTX_SWITCH_THRESHOLD=30000
+    export TOLERANT_UNPROGRESSED_CNT=30000
     export NUM_TRY_TASKQ_HEAD=200
+    
+    #pure tp
+    # export ONEFLOW_OFCCL_SKIP_NEGO=0
+    # export RECV_SUCCESS_FACTOR=40
+    # export RECV_SUCCESS_THRESHOLD=1000000000
+    # export BASE_CTX_SWITCH_THRESHOLD=100000
+    # export TOLERANT_UNPROGRESSED_CNT=16000
+    # export NUM_TRY_TASKQ_HEAD=200
 
     # 2tp2pp 2ag
     # export ONEFLOW_OFCCL_SKIP_NEGO=0
@@ -97,20 +97,20 @@ elif [ $GPUS = 4 ]; then
 elif [  $GPUS = 8 ]; then
 
     # large 3d 4ag
-    export ONEFLOW_OFCCL_SKIP_NEGO=0
-    export RECV_SUCCESS_FACTOR=5
-    export RECV_SUCCESS_THRESHOLD=2000
-    export BASE_CTX_SWITCH_THRESHOLD=300
-    export TOLERANT_UNPROGRESSED_CNT=80000
-    export NUM_TRY_TASKQ_HEAD=5
+    # export ONEFLOW_OFCCL_SKIP_NEGO=0
+    # export RECV_SUCCESS_FACTOR=5
+    # export RECV_SUCCESS_THRESHOLD=2000
+    # export BASE_CTX_SWITCH_THRESHOLD=300
+    # export TOLERANT_UNPROGRESSED_CNT=80000
+    # export NUM_TRY_TASKQ_HEAD=5
 
     #pure dp
-    # export ONEFLOW_OFCCL_SKIP_NEGO=0
-    # export RECV_SUCCESS_FACTOR=30
-    # export RECV_SUCCESS_THRESHOLD=100000000
-    # export BASE_CTX_SWITCH_THRESHOLD=120000
-    # export TOLERANT_UNPROGRESSED_CNT=180000
-    # export NUM_TRY_TASKQ_HEAD=240
+    export ONEFLOW_OFCCL_SKIP_NEGO=0
+    export RECV_SUCCESS_FACTOR=30
+    export RECV_SUCCESS_THRESHOLD=100000000
+    export BASE_CTX_SWITCH_THRESHOLD=120000
+    export TOLERANT_UNPROGRESSED_CNT=180000
+    export NUM_TRY_TASKQ_HEAD=240
     
     #pure tp
     # export ONEFLOW_OFCCL_SKIP_NEGO=0
