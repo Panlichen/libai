@@ -84,3 +84,5 @@ train.train_micro_batch_size = 128
 train.num_accumulation_steps = int(os.getenv("AG")) # global_batch_size = micro_batch_size  * num_grad_acc * data_parallel_groups
 train.train_micro_batch_size = 128 // train.num_accumulation_steps
 
+train.nccl_fusion_max_ops = 1
+

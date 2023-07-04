@@ -44,10 +44,10 @@ export DEBUG_FILE="/home/panlichen/work/oneflow/log/oneflow_cpu_rank_"
 export NUM_ITER_ENV=200
 echo NUM_ITER_ENV=$NUM_ITER_ENV
 
-export TP=1
-export DP=8
-export PP=1
-export AG=1
+export TP=2
+export DP=2
+export PP=2
+export AG=2
 export MODEL=BASE
 
 if [ $GPUS = 2 ]; then
@@ -105,12 +105,12 @@ elif [  $GPUS = 8 ]; then
     # export NUM_TRY_TASKQ_HEAD=5
 
     #pure dp
-    export ONEFLOW_OFCCL_SKIP_NEGO=0
-    export RECV_SUCCESS_FACTOR=30
-    export RECV_SUCCESS_THRESHOLD=100000000
-    export BASE_CTX_SWITCH_THRESHOLD=120000
-    export TOLERANT_UNPROGRESSED_CNT=180000
-    export NUM_TRY_TASKQ_HEAD=240
+    # export ONEFLOW_OFCCL_SKIP_NEGO=0
+    # export RECV_SUCCESS_FACTOR=30
+    # export RECV_SUCCESS_THRESHOLD=100000000
+    # export BASE_CTX_SWITCH_THRESHOLD=120000
+    # export TOLERANT_UNPROGRESSED_CNT=180000
+    # export NUM_TRY_TASKQ_HEAD=240
     
     #pure tp
     # export ONEFLOW_OFCCL_SKIP_NEGO=0
@@ -137,12 +137,19 @@ elif [  $GPUS = 8 ]; then
     # export NUM_TRY_TASKQ_HEAD=10
 
     # base 3d 2ag
+    export ONEFLOW_OFCCL_SKIP_NEGO=0
+    export RECV_SUCCESS_FACTOR=5
+    export RECV_SUCCESS_THRESHOLD=2000
+    export BASE_CTX_SWITCH_THRESHOLD=200
+    export TOLERANT_UNPROGRESSED_CNT=80000
+    export NUM_TRY_TASKQ_HEAD=5
+    # 尝试：
     # export ONEFLOW_OFCCL_SKIP_NEGO=0
-    # export RECV_SUCCESS_FACTOR=5
-    # export RECV_SUCCESS_THRESHOLD=2000
-    # export BASE_CTX_SWITCH_THRESHOLD=200
-    # export TOLERANT_UNPROGRESSED_CNT=80000
-    # export NUM_TRY_TASKQ_HEAD=5
+    # export RECV_SUCCESS_FACTOR=10
+    # export RECV_SUCCESS_THRESHOLD=1200000
+    # export BASE_CTX_SWITCH_THRESHOLD=12000
+    # export TOLERANT_UNPROGRESSED_CNT=180000
+    # export NUM_TRY_TASKQ_HEAD=10
     
     # base 3d 4ag
     # export ONEFLOW_OFCCL_SKIP_NEGO=0
@@ -244,7 +251,7 @@ $cmd \
   $FILE --config-file $CONFIG ${@:4} \
   > /home/panlichen/work/oneflow/log/oneflow.log 2>&1
 if [[ $ONEFLOW_ENABLE_OFCCL = 1 ]]; then
-    cp /home/panlichen/work/oneflow/log/oneflow.log oneflow_${HOST}_MODEL_${MODEL}_TP_${TP}_DP_${DP}_PP_${PP}_AG_${AG}_BASE_${BASE_CTX_SWITCH_THRESHOLD}_FACTOR_${RECV_SUCCESS_FACTOR}_UP_${RECV_SUCCESS_THRESHOLD}_TRYHEAD_${NUM_TRY_TASKQ_HEAD}.log
+    cp /home/panlichen/work/oneflow/log/oneflow.log oneflow_${HOST}_MODEL_${MODEL}_TP_${TP}_DP_${DP}_PP_${PP}_AG_${AG}_BASE_${BASE_CTX_SWITCH_THRESHOLD}_FACTOR_${RECV_SUCCESS_FACTOR}_UP_${RECV_SUCCESS_THRESHOLD}_TRYHEAD_${NUM_TRY_TASKQ_HEAD}_$(date +"%Y-%m-%d_%H-%M-%S").log
 fi
 
 

@@ -23,14 +23,14 @@ NODE=2
 # ADDR=11.11.1.28
 # PORT=12345
 
-if [[ $HOST = "oneflow-28" ]]; then
+if [[ $HOST = "oneflow-27" ]]; then
     NODE_RANK=0
-elif [[ $HOST = "oneflow-27" ]]; then
+elif [[ $HOST = "oneflow-28" ]]; then
     NODE_RANK=1
 fi
 echo $NODE_RANK
 
-ADDR=11.11.1.28
+ADDR=11.11.1.27
 PORT=12345
 
 # if [[ $HOST = "oneflow-27" ]]; then
@@ -81,7 +81,7 @@ export TP=4
 export DP=2
 export PP=2
 export AG=2
-export MODEL=BASE
+export MODEL=LARGE
 
 
 if [  $GPUS = 8 ]; then
@@ -110,12 +110,12 @@ if [  $GPUS = 8 ]; then
     # export NUM_TRY_TASKQ_HEAD=5
     
     # base3d-4tp2dp2pp 2
-    export ONEFLOW_OFCCL_SKIP_NEGO=0
-    export RECV_SUCCESS_FACTOR=20
-    export RECV_SUCCESS_THRESHOLD=5000
-    export BASE_CTX_SWITCH_THRESHOLD=200
-    export TOLERANT_UNPROGRESSED_CNT=80000
-    export NUM_TRY_TASKQ_HEAD=5
+    # export ONEFLOW_OFCCL_SKIP_NEGO=0
+    # export RECV_SUCCESS_FACTOR=20
+    # export RECV_SUCCESS_THRESHOLD=5000
+    # export BASE_CTX_SWITCH_THRESHOLD=200
+    # export TOLERANT_UNPROGRESSED_CNT=80000
+    # export NUM_TRY_TASKQ_HEAD=5
 
     # export ONEFLOW_OFCCL_SKIP_NEGO=0
     # export RECV_SUCCESS_FACTOR=5
@@ -133,12 +133,12 @@ if [  $GPUS = 8 ]; then
     # export NUM_TRY_TASKQ_HEAD=5
 
     # # large3d-4tp2dp2pp 2
-    # export ONEFLOW_OFCCL_SKIP_NEGO=0
-    # export RECV_SUCCESS_FACTOR=5
-    # export RECV_SUCCESS_THRESHOLD=3000
-    # export BASE_CTX_SWITCH_THRESHOLD=400
-    # export TOLERANT_UNPROGRESSED_CNT=80000
-    # export NUM_TRY_TASKQ_HEAD=5
+    export ONEFLOW_OFCCL_SKIP_NEGO=0
+    export RECV_SUCCESS_FACTOR=5
+    export RECV_SUCCESS_THRESHOLD=3000
+    export BASE_CTX_SWITCH_THRESHOLD=400
+    export TOLERANT_UNPROGRESSED_CNT=80000
+    export NUM_TRY_TASKQ_HEAD=5
 
     # # large3d-4tp2dp2pp 4
     # export ONEFLOW_OFCCL_SKIP_NEGO=0
